@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --source-map",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.25.0",
+    "babel-plugin-component": "^1.1.1",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.7",
+    "element-ui": "^2.15.6",
+    "swiper": "^5.4.5",
     "vue": "^2.6.11",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
   },
