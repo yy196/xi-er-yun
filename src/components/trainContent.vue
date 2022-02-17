@@ -3,11 +3,17 @@
     <!-- 上部分 -->
     <div class="train-top">
       <div class="train-top-left">
-        <div class="train-top-left1">
-          <img src="../assets/train1.jpg" alt="" />
-        </div>
-        <div class="train-top-left2">
-          <img src="../assets/train2.jpg" alt="" />
+        <!-- <div
+          v-for="item in floorData2[indexProvided].leftAdvertisementList"
+          :key="item.imageUrl"
+        >
+          <img :src="item.imageUrl" alt="" />
+        </div> -->
+        <div
+          v-for="item in floorData2.leftAdvertisementList"
+          :key="item.imageUrl"
+        >
+          <img :src="item.imageUrl" alt="" />
         </div>
       </div>
       <div class="train-top-right">
@@ -31,81 +37,43 @@
           </div>
           <div class="tabContent" ref="tabContent">
             <div class="tab-content1 active-tab-content" data-content="1">
-              <div class="tab-content1-item">
-                <img src="../assets/train3.jpg" alt="" />
-                <span class="tab-content1-item-title"
-                  >第一集：环境综合服务市场占不住？业务实践大力拓展市场渠道！</span
-                >
+              <div
+                class="tab-content1-item"
+                v-for="(item, index) in floorData.courseList"
+                :key="index"
+              >
+                <img :src="item.thumbnailUrl" alt="" />
+                <span class="tab-content1-item-title">{{
+                  item.productName
+                }}</span>
                 <span>
                   <img src="../assets/fire.png" alt="" />
-                  17人已购买</span
+                  {{ item.buyCount }}人已购买</span
                 >
                 <div>
-                  <span>主讲人 西尔</span>
-                  <span>￥2000</span>
-                </div>
-                <span class="on-line">在线</span>
-              </div>
-              <div class="tab-content1-item">
-                <img src="../assets/train3.jpg" alt="" />
-                <span class="tab-content1-item-title"
-                  >第一集：环境综合服务市场占不住？业务实践大力拓展市场渠道！</span
-                >
-                <span>
-                  <img src="../assets/fire.png" alt="" />
-                  17人已购买</span
-                >
-                <div>
-                  <span>主讲人 西尔</span>
-                  <span>￥2000</span>
-                </div>
-                <span class="on-line">在线</span>
-              </div>
-              <div class="tab-content1-item">
-                <img src="../assets/train3.jpg" alt="" />
-                <span class="tab-content1-item-title"
-                  >第一集：环境综合服务市场占不住？业务实践大力拓展市场渠道！</span
-                >
-                <span>
-                  <img src="../assets/fire.png" alt="" />
-                  17人已购买</span
-                >
-                <div>
-                  <span>主讲人 西尔</span>
-                  <span>￥2000</span>
+                  <span>主讲人 {{ item.teacherName }}</span>
+                  <span>￥{{ item.basicPrice }}</span>
                 </div>
                 <span class="on-line">在线</span>
               </div>
 
-              <div class="tab-content1-item-far">
-                <img src="../assets/train6.jpg" alt="" />
+              <div
+                class="tab-content1-item-far"
+                v-for="(item, index) in floorData.classList"
+                :key="index + 'A'"
+              >
+                <img :src="item.thumbnailUrl" alt="" />
 
-                <span class="tab-content1-item-title"
-                  >《生态环境综合服务（生态环保管家）及延伸》在线培训班</span
-                >
+                <span class="tab-content1-item-title">{{
+                  item.productName
+                }}</span>
                 <span>
                   <img src="../assets/fire.png" alt="" />
-                  17人已购买</span
+                  {{ item.buyCount }}人已购买</span
                 >
                 <div>
                   <span>主讲人 西尔</span>
-                  <span>￥2000</span>
-                </div>
-                <span class="on-line">远程</span>
-              </div>
-              <div class="tab-content1-item-far">
-                <img src="../assets/train7.jpg" alt="" />
-
-                <span class="tab-content1-item-title"
-                  >“环保管家”第三方能力提升班</span
-                >
-                <span>
-                  <img src="../assets/fire.png" alt="" />
-                  17人已购买</span
-                >
-                <div>
-                  <span>主讲人 西尔</span>
-                  <span>￥2000</span>
+                  <span>￥{{ item.basicPrice }}</span>
                 </div>
                 <span class="on-line">远程</span>
               </div>
@@ -401,18 +369,23 @@
     </div>
     <!-- 下部分 -->
     <div class="train-bottom">
-      <img src="../assets/train8.jpg" alt="" />
-      <img src="../assets/train9.jpg" alt="" />
+      <img
+        v-for="item in floorData2.downAdvertisementList"
+        :key="item.imageUrl"
+        :src="item.imageUrl"
+        alt=""
+      />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['floorData'],
+  props: ['floorData', 'indexProvided', 'floorData2'],
   data() {
     return {
       tabNum: 4
+      // floorData2: []
     }
   },
   methods: {
@@ -438,6 +411,26 @@ export default {
       this.$refs.tab44.style.color = 'black'
       this.$refs.tab44.style.borderBottom = 'none'
     }
+  },
+  created() {
+    console.log(this.indexProvided)
+    console.log(this.floorData2, '999999999999')
+    console.log(this.floorData2[this.indexProvided])
+
+    // let getFloorData2 = () => {
+    //   this.$http
+    //     .get('api/search_home_floor_list')
+    //     .then(({ data: res }) => {
+    //       for (let i = 0; i < res.data.length; i++) {
+    //         this.floorData2.push(res.data[i])
+    //       }
+    //       console.log(this.floorData2[this.indexProvided], '1111111111111')
+    //     })
+    //     .catch((err) => {
+    //       console.log('error', err)
+    //     })
+    // }
+    // getFloorData2()
   },
   mounted() {
     this.$refs.tab11.addEventListener('click', (e) => {

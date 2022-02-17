@@ -141,12 +141,17 @@
           </div>
         </div>
         <!-- 地图 -->
-        <div class="china-map-container">
+        <div class="china-map-container main-center-container">
           <div class="map-title">
             <img src="../assets/mapTitle.png" alt="" />
             培训数据
             <div class="block-blue"></div>
           </div>
+          <china-map></china-map>
+          <swiper-vertical
+            :scrollListData="scrollListData"
+            class="swiper-vertical"
+          ></swiper-vertical>
         </div>
         <!-- 广告区域 -->
         <div class="advertising-area">
@@ -198,9 +203,11 @@
                 <div class="block-blue"></div>
               </div>
               <train-content
-                v-for="(item, index) in floorData.length"
-                :key="item"
+                v-for="(item, index) in floorData"
+                :key="item.classList[0].thumbnailUrl"
                 :floorData="floorData[index]"
+                :indexProvided="index"
+                :floorData2="floorData2[index]"
               ></train-content>
             </div>
           </div>
@@ -294,12 +301,16 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import TrainContent from '../components/trainContent.vue'
+import SwiperVertical from '../components/swiperVertical.vue'
+import ChinaMap from '../components/chinaMap.vue'
 
 export default {
   components: {
     Swiper,
     SwiperSlide,
-    TrainContent
+    TrainContent,
+    SwiperVertical,
+    ChinaMap
   },
   name: 'Home',
   data() {
@@ -316,6 +327,13 @@ export default {
       // 首页全部课程弹出框相关数据
       homeNavigationList: [],
       floorData: [],
+      // 首页广告区域下侧图面和问答数据
+      floorData2: [],
+
+      // 正在进行的推荐数据
+      onProgressData: [],
+      // 循环滚动列表数据
+      scrollListData: [],
       swiperOption: {
         autoplay: true,
         loop: true,
@@ -419,7 +437,7 @@ export default {
     }
   },
   created() {
-    // 轮播图数据
+    // 广告区域数据
     this.getData()
   },
   mounted() {
@@ -578,6 +596,58 @@ export default {
           }
         })
       }
+      let getOnProgressData = () => {
+        this.$http
+          .get('api/get_recommend_list', {
+            params: {
+              viewPageID: 19
+            }
+          })
+          .then(({ data: res }) => {
+            this.onProgressData = res.data
+          })
+          .catch((err) => {
+            console.log('err', err)
+          })
+      }
+      let getScrollList = () => {
+        this.$http
+          .get('api/search_plat_topic_scroll_list', {
+            pageSize: 40
+          })
+          .then(({ data: res }) => {
+            this.scrollListData = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      let getFloorData2 = () => {
+        this.$http
+          .get('api/search_home_floor_list')
+          .then(({ data: res }) => {
+            for (let i = 0; i < res.data.length; i++) {
+              this.floorData2.push(res.data[i])
+            }
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      //   let getFloorData2 = () => {
+      //   this.$http
+      //     .get('api/search_home_floor_list')
+      //     .then(({ data: res }) => {
+      //       for (let i = 0; i < res.data.length; i++) {
+      //         this.floorData2.push(res.data[i])
+      //       }
+      //       console.log(this.floorData2[this.indexProvided], '1111111111111')
+      //     })
+      //     .catch((err) => {
+      //       console.log('error', err)
+      //     })
+      // }
+      getFloorData2()
       // 获取轮播图数据
       getRotationData()
       // 获取导航栏数据
@@ -600,13 +670,18 @@ export default {
               { data: res4 }
             ) => {
               this.floorData.push(res1.data, res2.data, res3.data, res4.data)
-              console.log(this.floorData)
             }
           )
         )
         .catch((err) => {
           console.log('err', err)
         })
+      // 获取正在进行的推荐数据
+      // 401 unAuth
+      getOnProgressData()
+
+      getScrollList()
+      // getFloorData2()
     }
   }
 }
@@ -934,7 +1009,8 @@ export default {
 
 //map
 .china-map-container {
-  height: 421px;
+  height: 461px;
+  position: relative;
   .map-title {
     margin: 20px 0;
     height: 40px;
@@ -954,6 +1030,11 @@ export default {
       left: 880px;
       background-color: lightblue;
     }
+  }
+  .swiper-vertical {
+    position: absolute;
+    right: 0px;
+    top: 150px;
   }
 }
 
