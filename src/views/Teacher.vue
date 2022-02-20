@@ -108,14 +108,15 @@ export default {
     return {}
   },
   created() {
-    this.$http
-      .get('api/get_navigation_list?pageNo=1&pageSize=8')
-      .then(({ data: res }) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log('err', err)
-      })
+    this.getData()
+    // this.$http
+    //   .get('api/get_navigation_list?pageNo=1&pageSize=8')
+    //   .then(({ data: res }) => {
+    //     console.log(res)
+    //   })
+    //   .catch((err) => {
+    //     console.log('err', err)
+    //   })
   },
   // beforeRouteEnter(to, from, next) {
   //   next(() => {
@@ -123,7 +124,25 @@ export default {
   //     console.log('routerEnter')
   //   })
   // },
-  methods: {}
+  methods: {
+    getData() {
+      let getTeacherList = () => {
+        this.$http
+          .get('api/get_teacher_list', {
+            teacherCategoryID: 0,
+            pageSize: 100
+          })
+          .then(({ data: res }) => {
+            console.log(res, 'teacher')
+            // this.homeNavigationList = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      getTeacherList()
+    }
+  }
 }
 </script>
 

@@ -135,7 +135,72 @@
 export default {
   data() {
     return {
-      currentPage: 1
+      currentPage: 1,
+      bookCategory: []
+    }
+  },
+  created() {
+    this.getData()
+  },
+  methods: {
+    getData() {
+      let getBookCategory = () => {
+        this.$http
+          .get('api/search_book_category_list')
+          .then(({ data: res }) => {
+            console.log(res)
+            // this.homeNavigationList = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      getBookCategory()
+
+      let get_recommend_list = () => {
+        this.$http
+          .get('api/get_recommend_list', {
+            viewPageID: 13
+          })
+          .then(({ data: res }) => {
+            console.log(res)
+            // this.homeNavigationList = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      get_recommend_list()
+      let getPage1BookList = () => {
+        this.$http
+          .get('api/get_book_list', {
+            pageNo: 1,
+            pageSize: 20
+          })
+          .then(({ data: res }) => {
+            console.log(res)
+            // this.homeNavigationList = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      getPage1BookList()
+      let getPage2BookList = () => {
+        this.$http
+          .get('api/get_book_list', {
+            pageNo: 2,
+            pageSize: 20
+          })
+          .then(({ data: res }) => {
+            console.log(res)
+            // this.homeNavigationList = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      getPage2BookList()
     }
   }
 }

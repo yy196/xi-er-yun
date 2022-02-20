@@ -3,12 +3,6 @@
     <!-- 上部分 -->
     <div class="train-top">
       <div class="train-top-left">
-        <!-- <div
-          v-for="item in floorData2[indexProvided].leftAdvertisementList"
-          :key="item.imageUrl"
-        >
-          <img :src="item.imageUrl" alt="" />
-        </div> -->
         <div
           v-for="item in floorData2.leftAdvertisementList"
           :key="item.imageUrl"
@@ -21,7 +15,7 @@
           <div class="title">
             <div>
               <div class="block-blue"></div>
-              第三方服务
+              {{ floorData2.floorName }}
             </div>
             <!-- tab栏切换 -->
             <div class="tab-bar" ref="tabBar">
@@ -336,29 +330,32 @@
               <template #title-item2> 免费资料 </template>
               <template #content-item1>
                 <section class="content-item1">
-                  <p>电厂冷却用的温排水是否属于清净下水?</p>
+                  <p>{{ floorData2.askList[0].title }}</p>
                   <div>333</div>
                   <section class="imgBar">
-                    <img src="../assets/icon-1.png" alt="" />
-                    金妍
+                    <img :src="floorData2.askList[0].headUrl" alt="" />
+                    {{ floorData2.askList[0].askNickName }}
                     <img src="../assets/thumb.png" alt="" />
-                    <span>2</span>
+                    <span>{{ floorData2.askList[0].likeNum }}</span>
                   </section>
-                  <p>
-                    在排放标准中，一般不使用“清净下水”这一术语。但在日常环境管理中，一般认为清净下水包括温排水、锅炉循环水等。考虑到这类清净下水通常为循环水，运行中
-                  </p>
+                  <p v-html="floorData2.askList[0].answerText"></p>
                   <span>查看</span>
                   <span>更多 <i class="el-icon-arrow-right"></i> </span>
                 </section>
               </template>
               <template #content-item2>
                 <section class="content-item2">
-                  <h2>“环保管家”服务合同模版</h2>
-                  <p>发布时间: 2018-10-10</p>
-                  <p>实施时间: 2018-10-10</p>
-                  <h2>企业突发环境事件应急管理隐患自查表</h2>
-                  <p>发布时间: 2018-10-10</p>
-                  <p>实施时间: 2018-10-10</p>
+                  <section class="section-box">
+                    <section
+                      v-for="item in floorData2.lawList"
+                      :key="item.lawName"
+                    >
+                      <h2>{{ item.lawName }}</h2>
+                      <p>发布时间: {{ item.publishTime }}</p>
+                      <p>实施时间: {{ item.implementationTime }}</p>
+                    </section>
+                  </section>
+
                   <span>更多 <i class="el-icon-arrow-right"></i> </span>
                 </section>
               </template>
@@ -412,26 +409,7 @@ export default {
       this.$refs.tab44.style.borderBottom = 'none'
     }
   },
-  created() {
-    console.log(this.indexProvided)
-    console.log(this.floorData2, '999999999999')
-    console.log(this.floorData2[this.indexProvided])
-
-    // let getFloorData2 = () => {
-    //   this.$http
-    //     .get('api/search_home_floor_list')
-    //     .then(({ data: res }) => {
-    //       for (let i = 0; i < res.data.length; i++) {
-    //         this.floorData2.push(res.data[i])
-    //       }
-    //       console.log(this.floorData2[this.indexProvided], '1111111111111')
-    //     })
-    //     .catch((err) => {
-    //       console.log('error', err)
-    //     })
-    // }
-    // getFloorData2()
-  },
+  created() {},
   mounted() {
     this.$refs.tab11.addEventListener('click', (e) => {
       this.resetAllTabs()
@@ -948,8 +926,21 @@ export default {
           .content-item1 {
             p:nth-of-type(1) {
               margin-top: 10px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+            }
+            p:nth-of-type(2) {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 4;
+              -webkit-box-orient: vertical;
             }
             .imgBar {
+              position: relative;
               margin-top: 10px;
               img {
                 &:first-child {
@@ -966,7 +957,9 @@ export default {
                 }
               }
               span {
-                margin-left: 5px;
+                position: absolute;
+                right: 7px;
+                top: 2px;
                 color: red;
               }
               & + p {
@@ -992,15 +985,19 @@ export default {
             }
           }
           .content-item2 {
-            h2 {
-              font-size: 16px;
-              color: #4aa1f0;
-              font-weight: 400;
-              margin: 15px 0;
-            }
-            p {
-              font-size: 14px;
-              font-weight: 300;
+            .section-box {
+              height: 200px;
+              overflow: hidden;
+              h2 {
+                font-size: 16px;
+                color: #4aa1f0;
+                font-weight: 400;
+                margin: 15px 0;
+              }
+              p {
+                font-size: 14px;
+                font-weight: 300;
+              }
             }
             > span {
               color: #4aa1f0;

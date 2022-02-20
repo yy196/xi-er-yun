@@ -21,7 +21,7 @@
                 <div
                   class="popover-detail-item"
                   v-for="item1 in item.childrenList"
-                  :key="item1.seriesName"
+                  :key="item1.courseList[0].productID"
                 >
                   <div class="popover-detail-item-title">
                     <span class="title">{{ item1.seriesName }}</span>
@@ -30,7 +30,7 @@
                   <div class="popover-detail-item-description">
                     <span
                       v-for="item2 in item1.courseList"
-                      :key="item2.productName"
+                      :key="item2.courseID + 'B'"
                       >{{ item2.productName }}</span
                     >
                   </div>

@@ -39,8 +39,27 @@ export default {
       timeStamp: 0
     }
   },
-  methods: {},
+  methods: {
+    getData() {
+      let getNewsList = () => {
+        this.$http
+          .get('api/get_information_list', {
+            pageNo: 1,
+            pageSize: 5
+          })
+          .then(({ data: res }) => {
+            console.log(res, 'news')
+            // this.homeNavigationList = res.data
+          })
+          .catch((err) => {
+            console.log('error', err)
+          })
+      }
+      getNewsList()
+    }
+  },
   created() {
+    this.getData()
     this.timeStamp = Date.now()
     setInterval(() => {
       this.timeStamp = Date.now()
